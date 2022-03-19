@@ -26,7 +26,7 @@ class Vector3(object):
         if not self._vector:
             raise TypeError('initialize failure, check input type')
 
-    def __repr__(self):
+    def __str__(self):
         return '{}({}, {}, {})'.format(
             self.__class__.__name__,
             self.x,

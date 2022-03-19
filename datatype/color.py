@@ -31,6 +31,14 @@ class ColorRGB(object):
         self._g = g
         self._b = b
 
+    def __str__(self):
+        return '{}({}, {}, {})'.format(
+            self.__class__.__name__,
+            self.r,
+            self.g,
+            self.b
+        )
+
     @classmethod
     def red(cls):
         return cls(255, 0, 0)
