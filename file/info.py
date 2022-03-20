@@ -2,6 +2,16 @@ import os
 import time
 
 
+def get_file_size(fpath):
+    """
+    Get file size in Bytes
+
+    :param fpath: str. file path
+    :return: int. size in bytes
+    """
+    return int(os.path.getsize(fpath))
+
+
 def get_modify_time(fpath):
     """
     Get file modify time
