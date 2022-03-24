@@ -1,7 +1,7 @@
 """
 Example:
 
-path = r"C:\Users\Admin\test.txt"
+path = "C:\\Users\\Admin\\test.txt"
 a = File(path)
 print(a.__dict__)
 
@@ -14,7 +14,7 @@ import os
 from . import info
 
 
-class File(object):
+class WinFile(object):
 
     def __init__(self, path):
         if not os.path.isfile(path):
@@ -51,7 +51,7 @@ class File(object):
 
     @property
     def ext(self):
-        return os.path.splitext(self.name)
+        return os.path.splitext(self.name)[-1]
 
     @property
     def directory(self):
