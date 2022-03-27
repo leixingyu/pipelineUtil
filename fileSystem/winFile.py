@@ -39,11 +39,16 @@ class WinFile(object):
     def get_from_dir(cls, directory):
         assets = list()
         files = os.listdir(directory)
-        for f in files:
+        for name in files:
+            f = os.path.join(directory, name)
             if os.path.isfile(f):
                 assets.append(cls(f))
 
         return assets
+
+    @property
+    def base(self):
+        return os.path.splitext(self.name)[0]
 
     @property
     def name(self):
@@ -96,5 +101,5 @@ class WinFile(object):
     def fimport(self):
         pass
 
-    def delete(self):
+    def fdelete(self):
         os.remove(self._path)

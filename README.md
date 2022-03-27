@@ -8,8 +8,4 @@
 
 ### Prerequisites
 
-- [Qt](https://github.com/mottosso/Qt.py): a module that supports different
-python qt bindings (Only needed if you need UI support functionalities)
-    ```
-    pip install Qt.py
-    ```
+None
