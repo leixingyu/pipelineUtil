@@ -1,5 +1,9 @@
+import logging
 import os
 import shutil
+
+
+logger = logging.getLogger(__name__)
 
 
 def create_dir(path):
@@ -12,11 +16,9 @@ def create_dir(path):
 
     if not os.path.exists(path):
         os.makedirs(path)
+        logger.info('Created working directory: \n\t%s', path)
     else:
-        print('directory already exists')
-
-    os.startfile(path)
-    print('Created working directory: \n\t{}'.format(path))
+        logger.warning('directory already exists')
     return path
 
 
@@ -28,12 +30,12 @@ def copy_file(src_path, dst_path):
     :param dst_path: str. destination folder full path
     """
     if not os.path.isfile(src_path):
-        print('file not located')
+        logger.warning('%s not located', src_path)
         return
 
     file_name = os.path.basename(src_path)
     if os.path.isfile(os.path.join(dst_path, file_name)):
-        print('file already exists in destination directory')
+        logger.warning('%s already exists in destination directory', file_name)
         return
 
     shutil.copy(src_path, dst_path)
