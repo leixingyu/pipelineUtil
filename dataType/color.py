@@ -1,3 +1,6 @@
+import re
+
+
 class ColorRGB(object):
     """
     Class for handling color in rgb format
@@ -38,6 +41,20 @@ class ColorRGB(object):
             self.g,
             self.b
         )
+
+    @classmethod
+    def from_hex(cls, hexcode='#000000'):
+        pattern = r'^#(?:[0-9a-fA-F]{3}){1,2}$'
+        regex = re.compile(pattern)
+
+        match = regex.search(hexcode)
+        if not match:
+            raise ValueError("not match")
+
+        r = int(hexcode[1:3], 16)
+        g = int(hexcode[3:5], 16)
+        b = int(hexcode[5:], 16)
+        return cls(r, g, b)
 
     @classmethod
     def red(cls):
@@ -106,3 +123,21 @@ class ColorRGB(object):
     @property
     def b_normalized(self):
         return self._b/255.00
+
+    def blend(self, color='', percent=0.5):
+        if not color:
+            color = self.white()
+
+        r = self.r * (1-percent) + color.r * percent
+        g = self.g * (1-percent) + color.g * percent
+        b = self.b * (1-percent) + color.b * percent
+
+        return ColorRGB(r, g, b)
+
+    @property
+    def hexcode(self):
+        return '#{r}{g}{b}'.format(
+            r='{:x}'.format(self.r),
+            g='{:x}'.format(self.g),
+            b='{:x}'.format(self.b)
+        )
