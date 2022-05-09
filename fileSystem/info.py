@@ -1,4 +1,6 @@
+import ctypes
 import os
+import string
 import time
 
 
@@ -54,3 +56,36 @@ def convert_size(size, unit=3):
         return size / (1024 * 1024 * 1024)
     else:
         return size
+
+
+def get_drives():
+    """
+    Get drive mounted
+
+    :return: list. list of drive letters mounted
+    """
+    drives = list()
+    bitmask = ctypes.windll.kernel32.GetLogicalDrives()
+    for letter in string.uppercase:
+        if bitmask & 1:
+            drives.append(letter)
+        bitmask >>= 1
+
+    return drives
+
+
+def get_path_free_space(path):
+    """
+    Get how much space is free in a given path
+
+    :param path: str. file path
+    :return: int. size in megabytes
+    """
+    free_bytes = ctypes.c_ulonglong(0)
+    ctypes.windll.kernel32.GetDiskFreeSpaceExW(
+        ctypes.c_wchar_p(path),
+        None,
+        None,
+        ctypes.pointer(free_bytes)
+    )
+    return free_bytes.value / 1024 / 1024

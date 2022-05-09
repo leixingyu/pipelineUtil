@@ -14,7 +14,7 @@ import os
 from . import info
 
 
-class WinFile(object):
+class File(object):
 
     def __init__(self, path):
         if not os.path.isfile(path):
