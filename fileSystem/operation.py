@@ -30,6 +30,7 @@ def copy_file(src_path, dst_path):
 
     :param src_path: str. source file full path
     :param dst_path: str. destination folder full path
+    :return: bool. whether the copy is successful
     """
     if not os.path.isfile(src_path):
         logger.warning('%s not located', src_path)
@@ -78,12 +79,24 @@ def operate_file_recursive(path, func):
 
     :param path: str. root directory for searching
     :param func: function callback
-    :return: list. list of files in full path of that directory
     """
     for f in os.listdir(path):
         full_path = os.path.join(path, f)
         if os.path.isfile(full_path):
             func(full_path)
         else:
-            operate_file_recursive(full_path)
+            operate_file_recursive(full_path, func)
 
+
+def operate_dir_recursive(path, func):
+    """
+    Recursively operate on files (not directories) inside a directory
+
+    :param path: str. root directory for searching
+    :param func: function callback
+    """
+    for f in os.listdir(path):
+        full_path = os.path.join(path, f)
+        if not os.path.isfile(full_path):
+            operate_dir_recursive(full_path, func)
+            func(full_path)
