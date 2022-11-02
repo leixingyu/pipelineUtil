@@ -53,3 +53,18 @@ def get_latest_commit_info(p4, path):
     head_time = head_time_sec.strftime("%m/%d/%Y, %H:%M:%S")
 
     return head_version, desc, head_time
+
+
+def get_files(p4, folder, recursive=False):
+    """
+    Get files under a Perforce depot path
+
+    :param p4: P4.P4. perforce connection instance
+    :param folder: str. depot path (e.g. //depot/testFolder/)
+    :param recursive: bool. whether to list files in sub-directories
+    :return: [{file info}]. list of file info dictionaries
+    """
+    if recursive:
+        return p4.run('files', '{}...'.format(folder))
+    else:
+        return p4.run('files', '{}*'.format(folder))
