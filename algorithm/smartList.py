@@ -26,24 +26,6 @@ def get_duplicates(seq):
     return dups
 
 
-def get_percentages(sample_count):
-    """
-    Get normalized percent for each sample
-
-    :param sample_count: int. number of sample point
-    :return: list. normalized percents
-    """
-    if sample_count <= 1:
-        return
-
-    outputs = list()
-    gap = 1.00 / (sample_count-1)
-    for index in range(sample_count):
-        outputs.append(index * gap)
-
-    return outputs
-
-
 def is_list_intersect(sub, sequence):
     """
     Find if any element in the subset belongs to a master sequence
