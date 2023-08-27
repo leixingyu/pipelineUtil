@@ -44,3 +44,35 @@ def enum_mapping(cls, enum):
         if isinstance(value, enum):
             mapping[key] = value
     return mapping
+
+
+def paths_to_nested_dict(paths):
+    """
+    Turns a file paths into a nested dictionary representing the folder
+    hierarchy.
+
+    https://stackoverflow.com/a/66995788/18298763
+    :param paths: [str]. file paths
+    :return: {str: str}. nested dictionary representing folder hierarchy
+    """
+    paths = sorted(
+        paths,
+        key=lambda s: len(s.lstrip('/').split('/')),
+        reverse=True
+    )
+
+    tree_path = dict()
+    for path in paths:
+        levels = path.lstrip('/').split('/')
+        file = levels.pop()
+        acc = tree_path
+        for i, folder in enumerate(levels, start=1):
+            if i == len(levels):
+                acc[folder] = acc[folder] if folder in acc else []
+                if isinstance(acc[folder], list):
+                    acc[folder].append(file)
+            else:
+                acc.setdefault(folder, {})
+            acc = acc[folder]
+
+    return tree_path
