@@ -2,6 +2,7 @@
 https://www.perforce.com/manuals/p4python/Content/P4Python/python.programming.html
 """
 
+import os
 
 import P4
 from datetime import datetime
@@ -68,3 +69,35 @@ def get_files(p4, folder, recursive=False):
         return p4.run('files', '{}...'.format(folder))
     else:
         return p4.run('files', '{}*'.format(folder))
+
+
+def convert_to_depot(p4, local_file):
+    """
+    Convert Windows path to Perforce depot path
+
+    :param p4: P4.P4. perforce connection instance
+    :param local_file: str. local path
+    :return: str. p4 path
+    """
+    if not os.path.isfile(local_file):
+        return
+
+    try:
+        [info] = p4.run('fstat', local_file)
+        return info['depotFile']
+    except P4.P4Exception:
+        raise RuntimeError('file path not under depot root')
+
+
+def convert_to_local(p4, depot_file):
+    """
+    Convert Perforce depot path to Windows local path
+
+    :param p4: P4.P4. perforce connection instance
+    :param depot_file: str. p4 depot path
+    :return: str. local path
+    """
+    try:
+        return p4.run('where', depot_file)[0]['path']
+    except P4.P4Exception:
+        raise RuntimeError('file path not under depot root')
